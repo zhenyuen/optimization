@@ -1,46 +1,57 @@
 import numpy as np
 
 def newton_rhapson_univariate(f, df, ddf, start, precision, max_iter):
-    x = start
+    x = start.copy()
     for i in range(max_iter):
         d = -df(x) / ddf(x)
 
         if (abs(d) < precision): break
         
         x += d 
-    print(f"Iterations: {i}")
+    print(f"Iterations: {i + 1}")
     return x
 
 
 def steepest_descent(f, df, ddf, start, precision, max_iter):
-    x = start
+    x = start.copy()
     for i in range(max_iter):
         d = -df(x)
         lr = d.T @ d / (d.T @ ddf(x) @ d)
         delta = lr * d
         if np.all(np.abs(delta) < precision): break
         x += delta
-    print(f"Iterations: {i}")
+    print(f"Iterations: {i + 1}")
     return x
 
 
 def newton_rhapson_multivariate(f, df, ddf, start, precision, max_iter):
-    x = start
+    x = start.copy()
     for i in range(max_iter):
         d = - np.linalg.inv(ddf(x)) @ df(x) 
 
         if np.all(np.abs(d) < precision): break
         x += d
-    print(f"Iterations: {i}")
+    print(f"Iterations: {i + 1}")
     return x
 
 
-def barzilai_borwein():
-    pass
+def barzilai_borwein(f, df, ddf, start, precision, max_iter):
+    x0 = start.copy()
+    x1 = steepest_descent(f, df, ddf, start, precision, 1) # one-step of sd
+
+    for i in range(max_iter):
+        dfx0 = df(x0)
+        dfx1 = df(x1)
+        temp = (dfx1 - dfx0)
+        d = - dfx1 @ (x1 - x0).T @ temp / (temp.T @ temp)
+        x0, x1 = x1, x1 + d
+        if np.all(np.abs(d) < precision): break
+    print(f"Iterations: {i + 1}")
+    return x1
 
 
 def conjugate_gradient(f, df, ddf, start, precision, max_iter):
-    x = start
+    x = start.copy()
     d = -df(x)
     lr = d.T @ d / (d.T @ ddf(x) @ d)
     delta = lr * d
@@ -58,7 +69,7 @@ def conjugate_gradient(f, df, ddf, start, precision, max_iter):
         delta = lr * d
         if np.all(np.abs(delta) < precision): break
 
-    print(f"Iterations: {i}")
+    print(f"Iterations: {i + 1}")
     return x
 
 
@@ -94,7 +105,8 @@ max_iter = 1000
 # print(steepest_descent(f, df, ddf, start, precision, max_iter))
 # print(np.matmul(np.array([[1, 2]]).T, np.array([[1, 2]])))
 # print(conjugate_gradient(f, df, ddf, start, precision, max_iter))
-print(newton_rhapson_multivariate(f, df, ddf, start, precision, max_iter))
+# print(newton_rhapson_multivariate(f, df, ddf, start, precision, max_iter))
+print(barzilai_borwein(f, df, ddf, start, precision, max_iter))
 
 # r = lambda x, xhat: x - xhat
 # j = dr = lambda x, xhat: np.eye(x.shape)
