@@ -25,7 +25,14 @@ def steepest_descent(f, df, ddf, start, precision, max_iter):
 
 
 def newton_rhapson_multivariate(f, df, ddf, start, precision, max_iter):
-    pass
+    x = start
+    for i in range(max_iter):
+        d = - np.linalg.inv(ddf(x)) @ df(x) 
+
+        if np.all(np.abs(d) < precision): break
+        x += d
+    print(f"Iterations: {i}")
+    return x
 
 
 def barzilai_borwein():
@@ -55,7 +62,13 @@ def conjugate_gradient(f, df, ddf, start, precision, max_iter):
     return x
 
 
-def newton_gauss():
+def newton_gauss(r, j, start, x, max_iter):
+    # Cannot figure out an example application yet
+    x = start
+    for i in range(max_iter):
+        J = j(x)
+        d = - (J.T @ J).I @ J.T @ r(x)
+        d = - []
     pass
 
 # Manual unit testing, t
@@ -80,4 +93,8 @@ precision = 1E-10
 max_iter = 1000
 # print(steepest_descent(f, df, ddf, start, precision, max_iter))
 # print(np.matmul(np.array([[1, 2]]).T, np.array([[1, 2]])))
-print(conjugate_gradient(f, df, ddf, start, precision, max_iter))
+# print(conjugate_gradient(f, df, ddf, start, precision, max_iter))
+print(newton_rhapson_multivariate(f, df, ddf, start, precision, max_iter))
+
+# r = lambda x, xhat: x - xhat
+# j = dr = lambda x, xhat: np.eye(x.shape)
