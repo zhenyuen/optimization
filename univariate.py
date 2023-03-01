@@ -27,7 +27,7 @@ end = 0.15
 max_iter = 100
 opt_width = 0.02
 print(golden_section(f, start, end, opt_width, max_iter))
-print
+
 
 
 

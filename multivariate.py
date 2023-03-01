@@ -10,6 +10,27 @@ def newton_rhapson_univariate(f, df, ddf, start, precision, max_iter):
         x += d 
     return x
 
+
+def steepest_descent():
+    pass
+
+
+def newton_rhapson_multivariate():
+    pass
+
+
+def barzilai_borwein():
+    pass
+
+
+def conjugate_gradient():
+    pass
+
+
+def newton_gauss():
+    pass
+
+
 f = lambda x: 1 / ((x ** 0.148) * (3 * np.pi - 16 * x))
 df = lambda x: -0.148 * (x ** -1.148) / (3 * np.pi - 16 * x) + 16 * x ** -0.148 / (3 * np.pi - 16 * x) ** 2
 ddf = lambda x: 0.170 * (x ** -2.148) / (3 * np.pi - 16 * x) - 4.736 * x ** -1.148 / (3 * np.pi - 16 * x) ** 2 + 512 * x ** -0.148 * (3 * np.pi - 16 * x) ** -3
